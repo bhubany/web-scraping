@@ -1,6 +1,7 @@
 import json
 from textwrap import indent
 import requests
+import os
 
 
 
@@ -42,6 +43,16 @@ def send_request(page=1, keyword="कोरोना"):
             finally:
                 file.close()
                 f.close()
+        try:
+            pg={
+                'page':page
+            }
+            with open("jsonFile.json", "a", encoding="utf-8") as file:
+                    json.dump(pg, file, indent=2)
+            with open("jsonFile.txt", "a", encoding="utf-8") as f:
+                    f.write("\npage:"+str(page))
+        except Exception as er:
+            print("Error Occurs as : ",er)
     except Exception as error:
         print("Error occurs : ", error)
     finally:
@@ -49,7 +60,27 @@ def send_request(page=1, keyword="कोरोना"):
 
 
 query_str = input("Enter Query String: ")
+
+# checking If file already Exist
+fileName = "jsonFile.json"
+existance = os.path.exists(fileName)
+# print(existance)
+
+if(existance):
+    try:
+        with open('jsonFile.json', 'r', encoding="utf-8") as f:
+            last_line = f.readlines()[-2]
+            previous_page=last_line.split(':')[-1]
+            print("Up to page = "+previous_page+"Has been fetched. Next will start From Page: "+str(int(previous_page)+1))
+            count = int(previous_page)*10   #since 10 article is shown per page
+            page_no=int(previous_page)+1
+            print("Count Value== ",count)
+    except Exception as err:
+        print("Error Occurs: ",err)
+
+
+# Calling for 3times for 30 articles
 while(count<30):
     send_request(page=page_no, keyword=query_str)
-    i+=1
+    page_no+=1
 
