@@ -13,14 +13,12 @@ def send_request(page=1, keyword="कोरोना"):
     
     try:
         response = requests.get(url)
-        if(response.status_code ==200):            
+        if(response.status_code ==200):         
             res = response.json()
-            v=res['data']['items']
+            v=res['data']['items']                      
+            list2.append({page:v})
+            count+=1   
             
-            count += len(v)          
-            for vals in v:       
-                list2.append(vals)            
-            list2.append({'page':page})
         else:
             print("Error Occurs with Status Code: ",response.status_code )
             return True     # true that res error occurs
@@ -41,19 +39,18 @@ if(existance):
     try:
         f= open('jsonFile.json', 'r', encoding="utf-8")
         data = json.load(f)
-        previous_page=data[-1]['page']
+        previous_page=list(data[-1].keys())[0]
 
         list2.extend(data) #storing previously fetched Data
         print("Up to page = "+str(previous_page)+" Has been fetched. Next will start From Page: "+str(int(previous_page)+1))
-        count = previous_page*10   #since 10 article is shown per page
-        page_no=previous_page+1
-        print("Count Value== ",count)
+        count =int(previous_page)   #since 10 article is shown per page
+        page_no=int(previous_page)+1
     except Exception as err:
         print("Error Occurs (file exist): ",err)
 
 
 # Calling for 3 times for 30 articles
-while(count<30):
+while(count<3):
     res_err = send_request(page=page_no, keyword=query_str)
     if(res_err):
         break
