@@ -21,10 +21,9 @@ def send_request(page=1, keyword="कोरोना"):
             for vals in v:       
                 list2.append(vals)            
             list2.append({'page':page})
-
         else:
             print("Error Occurs with Status Code: ",response.status_code )
-            exit()
+            return True     # true that res error occurs
 
     except Exception as error:
         print("Error occurs (Requests) : ", error)
@@ -55,7 +54,9 @@ if(existance):
 
 # Calling for 3 times for 30 articles
 while(count<30):
-    send_request(page=page_no, keyword=query_str)
+    res_err = send_request(page=page_no, keyword=query_str)
+    if(res_err):
+        break
     page_no+=1
 
 if(len(list2) != 0):
@@ -67,4 +68,3 @@ if(len(list2) != 0):
         print("Error Occurs in (File) : ",err)
     finally:
         file.close()
-
