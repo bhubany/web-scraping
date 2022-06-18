@@ -5,8 +5,8 @@ import requests
 
 
 list1=[]
-dist1 = {}
 count = 0
+page_no=1
 def send_request(page=1, keyword="कोरोना"):
     global count
     url ="https://bg.annapurnapost.com/api/search?title="+str(keyword)+"&page="+str(page)
@@ -49,8 +49,7 @@ def send_request(page=1, keyword="कोरोना"):
 
 
 query_str = input("Enter Query String: ")
-
-i=1
 while(count<30):
-    send_request(page=i, keyword=query_str)
+    send_request(page=page_no, keyword=query_str)
     i+=1
+
