@@ -39,10 +39,10 @@ if(existance):
     try:
         f= open('jsonFile.json', 'r', encoding="utf-8")
         data = json.load(f)
-        previous_page=list(data[-1].keys())[0]
+        previous_page=data[-1]['current_page']
 
         list2.extend(data) #storing previously fetched Data
-        print("Up to page = "+str(previous_page)+" Has been fetched. Next will start From Page: "+str(int(previous_page)+1))
+        print("Up to page = "+str(previous_page)+" Has been fetched. Next will start From Page {} (limit is 3) ".format(int(previous_page)+1))
         count =int(previous_page)   #since 10 article is shown per page
         page_no=int(previous_page)+1
     except Exception as err:
