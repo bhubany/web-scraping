@@ -16,9 +16,9 @@ def send_request(page=1, keyword="कोरोना"):
         if(response.status_code ==200):         
             res = response.json()
             v=res['data']['items']                      
-            list2.append({page:v})
+            list2.append({'current_page':page,'articles':v})
             count+=1   
-            
+
         else:
             print("Error Occurs with Status Code: ",response.status_code )
             return True     # true that res error occurs
