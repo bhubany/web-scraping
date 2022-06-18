@@ -4,8 +4,6 @@ import requests
 import os
 
 
-
-list1=[]
 list2=[]
 count = 0
 page_no=1
@@ -18,18 +16,10 @@ def send_request(page=1, keyword="कोरोना"):
         if(response.status_code ==200):            
             res = response.json()
             v=res['data']['items']
-
-            for val in v[0]:
-                list1.append(val)
             
             count += len(v)          
-            
-            for vals in v:
-                temp1 = {}
-                for key in list1:
-                    temp1[key] = vals[key]
-                
-                list2.append(temp1)            
+            for vals in v:       
+                list2.append(vals)            
             list2.append({'page':page})
 
         else:
@@ -53,7 +43,7 @@ if(existance):
         f= open('jsonFile.json', 'r', encoding="utf-8")
         data = json.load(f)
         previous_page=data[-1]['page']
-        
+
         list2.extend(data) #storing previously fetched Data
         print("Up to page = "+str(previous_page)+" Has been fetched. Next will start From Page: "+str(int(previous_page)+1))
         count = previous_page*10   #since 10 article is shown per page
