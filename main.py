@@ -16,8 +16,8 @@ def send_request(page=1, keyword="कोरोना"):
         if(response.status_code ==200):         
             res = response.json()
             v=res['data']['items']                      
-            list2.append({'current_page':page,'articles':v})
-            count+=1   
+            list2.append(v)
+            count+=1 
 
         else:
             print("Error Occurs with Status Code: ",response.status_code )
@@ -31,7 +31,7 @@ def send_request(page=1, keyword="कोरोना"):
 
 query_str = input("Enter Query String: ")
 
-# checking If not all 30 articles are fetched from the page
+# checking If all 30 articles are fetched from the page
 fileName = "jsonFile.json"
 existance = os.path.exists(fileName)
 
@@ -39,17 +39,17 @@ if(existance):
     try:
         f= open('jsonFile.json', 'r', encoding="utf-8")
         data = json.load(f)
-        previous_page=data[-1]['current_page']
+        previous_page=data['current_page']
 
-        list2.extend(data) #storing previously fetched Data
+        list2.extend(data['articles']) #storing previously fetched Data
         print("Up to page = "+str(previous_page)+" Has been fetched. Next will start From Page {} (limit is 3) ".format(int(previous_page)+1))
-        count =int(previous_page)   #since 10 article is shown per page
+        count =int(previous_page)
         page_no=int(previous_page)+1
     except Exception as err:
         print("Error Occurs (file exist): ",err)
 
 
-# Calling for 3 times for 30 articles
+# Calling 3 times for 30 articles in list2
 while(count<3):
     res_err = send_request(page=page_no, keyword=query_str)
     if(res_err):
@@ -59,7 +59,7 @@ while(count<3):
 if(len(list2) != 0):
     try:
         with open("jsonFile.json", "w", encoding="utf-8") as file:
-            json.dump(list2, file, indent=2)
+            json.dump({'current_page':(page_no-1), 'articles':list2}, file, indent=2)
 
     except Exception as err:
         print("Error Occurs in (File) : ",err)
