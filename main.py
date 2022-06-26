@@ -4,6 +4,8 @@ import requests
 list2=[]
 
 def send_request(page=1, keyword="कोरोना", list2=[]):
+    print(keyword)
+
     while(page <= 3):
         url ="https://bg.annapurnapost.com/api/search?title="+str(keyword)+"&page="+str(page)    
 
@@ -15,6 +17,7 @@ def send_request(page=1, keyword="कोरोना", list2=[]):
             page+=1
         else:
             print("Error Occurs with Status Code: ",response.status_code )
+            break
 
     if(len(list2) != 0):
         try:
@@ -33,4 +36,4 @@ try:
     print("Up to page = {} Has been fetched (limit is set to 3).".format(data['current_page'] - 1))
     send_request(page=data['current_page'], keyword=query_str, list2=data['articles'])
 except:
-    send_request()
+    send_request(keyword=query_str)
