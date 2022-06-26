@@ -25,11 +25,12 @@ def send_request(page=1, keyword="कोरोना", list2=[]):
         finally:
             file.close()
 
+
 query_str = input("Enter Query String: ") # Taking Keywords
 try:
     file= open('jsonFile.json', 'r', encoding="utf-8")
     data = json.load(file)
-    print("Up to page = {} Has been fetched (limit is set to 3).".format(data['current_page']-1))
-    send_request(page=data['current_page'],keyword=query_str, list2=data['articles'])
+    print("Up to page = {} Has been fetched (limit is set to 3).".format(data['current_page'] - 1))
+    send_request(page=data['current_page'], keyword=query_str, list2=data['articles'])
 except:
     send_request()
