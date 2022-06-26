@@ -4,8 +4,6 @@ import requests
 list2=[]
 
 def send_request(page=1, keyword="कोरोना", list2=[]):
-    print(keyword)
-
     while(page <= 3):
         url ="https://bg.annapurnapost.com/api/search?title="+str(keyword)+"&page="+str(page)    
 
